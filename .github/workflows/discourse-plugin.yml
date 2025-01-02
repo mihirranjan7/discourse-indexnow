@@ -1,11 +1,47 @@
-name: Discourse Plugin
+name: Plugin CI
 
 on:
   push:
     branches:
-      - main
+      - main  # Trigger the CI on push to the main branch
   pull_request:
+    branches:
+      - main  # Trigger the CI on pull requests to the main branch
 
 jobs:
-  ci:
-    uses: discourse/.github/.github/workflows/discourse-plugin.yml@v1
+  test:
+    runs-on: ubuntu-latest  # Use an Ubuntu runner to run the job
+
+    steps:
+    # Step 1: Checkout the repository to the CI runner
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Step 2: Set up Ruby environment for Discourse plugin testing
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.1  # Set the Ruby version Discourse uses
+        bundler-cache: true  # Cache the bundler dependencies for faster installs
+
+    # Step 3: Install Discourse dependencies
+    - name: Install dependencies
+      run: |
+        gem install bundler
+        bundle install
+
+    # Step 4: Set up Node.js for JS-related tasks
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'  # Specify Node.js version for frontend tasks
+
+    # Step 5: Install JS dependencies
+    - name: Install JS dependencies
+      run: npm install
+
+    # Step 6: Run tests (Rspec for Ruby and any JS tests you have)
+    - name: Run tests
+      run: |
+        bundle exec rspec
+        npm run test  # If you have JS tests for Discourse frontend
