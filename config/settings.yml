@@ -1,4 +1,24 @@
-TODO_plugin_name:
-  plugin_name_enabled:
+plugins:
+  indexnow_enabled:
     default: false
     client: true
+    type: bool
+    description: "Enable IndexNow functionality to notify search engines of updates."
+
+  indexnow_key:
+    default: ""
+    client: true
+    type: text
+    description: "Enter your IndexNow key. Generate one from Bing or IndexNow service."
+
+  indexnow_enable_batch:
+    default: false
+    client: true
+    type: bool
+    description: "Enable batch notification for older topics."
+
+  indexnow_search_engines:
+    default: "https://www.bing.com/indexnow,https://yandex.com/indexnow"
+    client: true
+    type: text
+    description: "Comma-separated list of IndexNow endpoints."
